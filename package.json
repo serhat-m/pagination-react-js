@@ -2,10 +2,14 @@
   "name": "pagination-react-js",
   "version": "1.0.0",
   "private": false,
-  "homepage": ".",
   "license": "MIT",
   "main": "dist/cjs/source.js",
   "module": "dist/esm/source.js",
+  "homepage": "https://serhat-m.github.io/pagination-react-js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serhat-m/pagination-react-js.git"
+  },
   "files": [
     "dist"
   ],
