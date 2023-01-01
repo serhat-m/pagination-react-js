@@ -66,10 +66,14 @@ const App = () => {
           navPrevCustom: "pagination-item",
           navNextCustom: "pagination-item"
         }}
+        showFirstNumberAlways={true}
+        showLastNumberAlways={true}
         navStart="&#171;"
         navEnd="&#187;"
         navPrev="&#x2039;"
         navNext="&#x203a;"
+        navPrevCustom={{ steps: 5, content: "\u00B7\u00B7\u00B7" }}
+        navNextCustom={{ steps: 5, content: "\u00B7\u00B7\u00B7" }}
       />
     </div>
   )
