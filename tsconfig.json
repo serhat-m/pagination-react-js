@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [ "dom", "dom.iterable", "es5", "es2015", "es2016", "esnext" ],
+    "jsx": "react-jsx",
+    "sourceMap": false,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "types": ["node"]
+  },
+  "include": [ "src/source.ts", "src/react-app-env.d.ts" ],
+}
