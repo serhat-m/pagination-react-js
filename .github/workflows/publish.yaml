@@ -1,0 +1,24 @@
+name: "Publish package"
+
+on:
+  release:
+    types: ["created"]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout Repository"
+        uses: "actions/checkout@v3"
+
+      - name: "Setup Node.js"
+        uses: "actions/setup-node@v3"
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org
+
+      - name: "Publish"
+        run: npm pkg delete scripts.prepare && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
