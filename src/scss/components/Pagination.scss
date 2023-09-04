@@ -1,0 +1,46 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 6px;
+    width: fit-content;
+    list-style-type: unset;
+    @include noSelect;
+    border: $border-size solid $color-gray-light;
+    padding: 7px 9px;
+    border-radius: $border-radius;
+
+    &-item {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: $border-radius;
+        flex-shrink: 0;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $color-gray-light;
+        }
+
+        &-active {
+            color: white;
+            background-color: $color-primary;
+            pointer-events: none;
+            @include transition(background-color, .1);
+
+            &:hover {
+                background-color: $color-primary;
+            }
+        }
+        
+        &.nav-item {
+            font-size: 1.1rem;
+            padding-bottom: 4px;
+        }
+    }
+}
