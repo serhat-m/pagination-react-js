@@ -57,7 +57,7 @@ const Pagination = () => {
     <div>
       <table>
         <tbody>
-          {dataList.slice(records.indexOfFirst, records.indexOfLast).map((record) => {
+          {dataList.slice(records.indexOfFirst, records.indexOfLast + 1).map((record) => {
             return (
               <tr key={record.id}>
                 <td>{record.id}</td>
