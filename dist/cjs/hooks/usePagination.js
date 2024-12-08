@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usePagination = void 0;
+exports.usePagination = usePagination;
 var react_1 = require("react");
 var generateNumArr_1 = require("../functions/generateNumArr");
 var getOffsetNumbers_1 = require("../functions/getOffsetNumbers");
@@ -46,4 +46,3 @@ function usePagination(_a) {
         },
     };
 }
-exports.usePagination = usePagination;

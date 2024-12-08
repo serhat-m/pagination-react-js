@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOffsetNumbers = void 0;
+exports.getOffsetNumbers = getOffsetNumbers;
 function getOffsetNumbers(_a) {
     var pageNumbers = _a.pageNumbers, firstNumber = _a.firstNumber, lastNumber = _a.lastNumber, activeNumber = _a.activeNumber, offset = _a.offset, permanentFirstNumber = _a.permanentFirstNumber, permanentLastNumber = _a.permanentLastNumber;
     // Example: Offset: 3, Current page: 1
@@ -20,4 +20,3 @@ function getOffsetNumbers(_a) {
     }
     return { pageOffsetNumbers: pageOffsetNumbers };
 }
-exports.getOffsetNumbers = getOffsetNumbers;
