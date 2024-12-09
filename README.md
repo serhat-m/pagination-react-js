@@ -208,71 +208,40 @@ const Pagination = () => {
 
 ![pagination.svg](https://github-production-user-asset-6210df.s3.amazonaws.com/51929566/293516615-212f7044-29de-41d6-a1ab-85143dde8e7f.svg)
 
+## `type TFnOptions`
+
 ```tsx
 type TFnOptions = {
-  activePage: number
-  recordsPerPage: number
-  totalRecordsLength: number
-  offset: number
-  navCustomPageSteps?: { prev?: number; next?: number }
-  permanentFirstNumber?: boolean
-  permanentLastNumber?: boolean
-}
-
-type TPaginationData = {
-  readonly records: {
-    perPage: number
-    indexOfFirst: number
-    indexOfLast: number
-  }
-  readonly pageNumbers: {
-    activePage: number
-    firstPage: number
-    lastPage: number
-    previousPage: number | false
-    nextPage: number | false
-    customPreviousPage: number | false
-    customNextPage: number | false
-    navigation: number[]
-  }
-  readonly setActivePage: (pageNumber: number) => void
-  readonly setRecordsPerPage: (recordsPerPage: number) => void
+  activePage: number // initial active page number
+  recordsPerPage: number // initial records per page
+  totalRecordsLength: number // data list length
+  offset: number // amount of numbers before and after the active number
+  navCustomPageSteps?: { prev?: number; next?: number } // step size of the user-defined navigation
+  permanentFirstNumber?: boolean // offset adjustment for permanent first number
+  permanentLastNumber?: boolean // offset adjustment for permanent last number
 }
 ```
 
-### `TFnOptions`
+## `type TPaginationData`
 
-- `activePage` initial active page number
-- `recordsPerPage` initial records per page
-- `totalRecordsLength` data list length
-- `offset` amount of numbers before and after the active number
-- `navCustomPageSteps` step size of the user-defined navigation
-- `permanentFirstNumber` offset adjustment for permanent first number
-- `permanentLastNumber` offset adjustment for permanent last number
-
-### `TPaginationData`
-
-**`records`**
-
-- `perPage` number of records per page
-- `indexOfFirst` index of first record
-- `indexOfLast` index of last record
-
-**`pageNumbers`**
-
-- `activePage` active page number
-- `firstPage` first page number
-- `lastPage` last page number
-- `previousPage` previous page number
-- `nextPage` next page number
-- `customPreviousPage` custom previous page number
-- `customNextPage` custom next page number
-- `navigation` array of navigation numbers
-
-**`setActivePage: (pageNumber: number) => void`**
-
-Function to update the active page
-
-**`setRecordsPerPage: (recordsPerPage: number) => void`**
-
-Function to update the records per page
+```tsx
+type TPaginationData = {
+  readonly records: {
+    perPage: number // number of records per page
+    indexOfFirst: number // index of first record
+    indexOfLast: number // index of last record
+  }
+  readonly pageNumbers: {
+    activePage: number // active page number
+    firstPage: number // first page number
+    lastPage: number // last page number
+    previousPage: number | false // previous page number
+    nextPage: number | false // next page number
+    customPreviousPage: number | false // custom previous page number
+    customNextPage: number | false // custom next page number
+    navigation: number[] // array of navigation numbers
+  }
+  readonly setActivePage: (pageNumber: number) => void // setter method to update the active page
+  readonly setRecordsPerPage: (recordsPerPage: number) => void // setter method to update the records per page
+}
+```

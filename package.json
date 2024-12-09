@@ -1,6 +1,6 @@
 {
   "name": "pagination-react-js",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "private": false,
   "license": "MIT",
   "main": "dist/cjs/source.js",
