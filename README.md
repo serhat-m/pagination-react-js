@@ -13,10 +13,9 @@ import { usePagination, generateTestData } from "pagination-react-js"
 
 type PaginationItemProps = {
   children: React.ReactNode
-  label: React.ComponentProps<"li">["aria-label"]
+  label: React.ComponentProps<"button">["aria-label"]
   active?: boolean
-  onClick?: React.ComponentProps<"li">["onClick"]
-  rel?: React.ComponentProps<"li">["rel"]
+  onClick: React.ComponentProps<"button">["onClick"]
 }
 
 const PaginationItem = ({ children, label, active, onClick, rel }: PaginationItemProps) => {
@@ -29,6 +28,22 @@ const PaginationItem = ({ children, label, active, onClick, rel }: PaginationIte
       onClick={onClick}
     >
       {children}
+    </li>
+  )
+}
+
+const PaginationItem = ({ children, label, active, onClick }: PaginationItemProps) => {
+  return (
+    <li>
+      <button
+        type="button"
+        className={["pagination-item", active ? "pagination-item-active" : undefined].filter((value) => value).join(" ")}
+        onClick={onClick}
+        aria-current={active ?? "page"}
+        aria-label={label}
+      >
+        {children}
+      </button>
     </li>
   )
 }
@@ -68,21 +83,13 @@ const Pagination = () => {
         </tbody>
       </table>
 
-      <nav role="navigation" aria-label="Pagination Navigation">
+      <nav role="navigation" aria-label="Page navigation">
         <ul className="pagination">
-          <PaginationItem
-            label={`Goto first page ${pageNumbers.firstPage}`}
-            rel="first"
-            onClick={() => updateActivePage(pageNumbers.firstPage)}
-          >
+          <PaginationItem label={`Goto first page ${pageNumbers.firstPage}`} onClick={() => updateActivePage(pageNumbers.firstPage)}>
             &laquo;
           </PaginationItem>
 
-          <PaginationItem
-            label={`Goto previous page ${pageNumbers.previousPage}`}
-            rel="prev"
-            onClick={() => updateActivePage(pageNumbers.previousPage)}
-          >
+          <PaginationItem label={`Goto previous page ${pageNumbers.previousPage}`} onClick={() => updateActivePage(pageNumbers.previousPage)}>
             &lsaquo;
           </PaginationItem>
 
@@ -95,10 +102,7 @@ const Pagination = () => {
           </PaginationItem>
 
           {pageNumbers.customPreviousPage && (
-            <PaginationItem
-              label={`Goto page ${pageNumbers.customPreviousPage}`}
-              onClick={() => updateActivePage(pageNumbers.customPreviousPage)}
-            >
+            <PaginationItem label={`Goto page ${pageNumbers.customPreviousPage}`} onClick={() => updateActivePage(pageNumbers.customPreviousPage)}>
               &middot;&middot;&middot;
             </PaginationItem>
           )}
@@ -134,19 +138,11 @@ const Pagination = () => {
             </PaginationItem>
           )}
 
-          <PaginationItem
-            label={`Goto next page ${pageNumbers.nextPage}`}
-            rel="next"
-            onClick={() => updateActivePage(pageNumbers.nextPage)}
-          >
+          <PaginationItem label={`Goto next page ${pageNumbers.nextPage}`} onClick={() => updateActivePage(pageNumbers.nextPage)}>
             &rsaquo;
           </PaginationItem>
 
-          <PaginationItem
-            label={`Goto last page ${pageNumbers.lastPage}`}
-            rel="last"
-            onClick={() => updateActivePage(pageNumbers.lastPage)}
-          >
+          <PaginationItem label={`Goto last page ${pageNumbers.lastPage}`} onClick={() => updateActivePage(pageNumbers.lastPage)}>
             &raquo;
           </PaginationItem>
         </ul>
@@ -172,7 +168,7 @@ const Pagination = () => {
   justify-content: center;
   gap: 7px;
   width: fit-content;
-  list-style-type: unset;
+  list-style-type: none;
   border: var(--border-size) solid var(--color-gray);
   padding: 8px 10px;
   border-radius: var(--border-radius);
@@ -241,7 +237,7 @@ type TPaginationData = {
     customNextPage: number | false // custom next page number
     navigation: number[] // array of navigation numbers
   }
-  readonly setActivePage: (pageNumber: number) => void // setter method to update the active page
-  readonly setRecordsPerPage: (recordsPerPage: number) => void // setter method to update the records per page
+  readonly setActivePage: (pageNumber: number) => void // function to update the active page
+  readonly setRecordsPerPage: (recordsPerPage: number) => void // function to update the records per page
 }
 ```
