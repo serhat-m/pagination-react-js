@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+. "$(dirname -- "$0")/utils/utils.sh"
 
-npm test
+print_message "🧐 Lint staged files"
+pnpm run lint:staged
