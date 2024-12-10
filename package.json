@@ -41,6 +41,8 @@
     "@types/node": "^22.10.1",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
+    "@vanilla-extract/css": "^1.16.1",
+    "@vanilla-extract/vite-plugin": "^4.0.18",
     "@vitejs/plugin-react-swc": "^3.7.2",
     "gh-pages": "^6.2.0",
     "husky": "^9.1.7",
@@ -49,6 +51,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sass": "^1.82.0",
+    "the-new-css-reset": "^1.11.3",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vitest": "^2.1.8"
