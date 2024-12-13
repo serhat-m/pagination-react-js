@@ -3,3 +3,6 @@ package-lock.json
 build
 .DS_Store
 dist
+tsconfig.node.tsbuildinfo
+tsconfig.app.tsbuildinfo
+tsconfig.tsbuildinfo

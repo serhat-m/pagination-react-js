@@ -25,7 +25,7 @@
     "build:cjs": "tsc ./src/package/index.ts --moduleResolution Node --declaration --module CommonJS --jsx react-jsx --outDir dist/cjs",
     "build:package": "rm -rf dist && pnpm run build:esm && pnpm run build:cjs",
     "lint:staged": "lint-staged",
-    "lint": "tsc --noEmit && biome check .",
+    "lint": "tsc -b --noEmit && biome check .",
     "lint:fix": "biome check . --write",
     "format:check": "biome format .",
     "format:fix": "biome format --write .",
