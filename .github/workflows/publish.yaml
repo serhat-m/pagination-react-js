@@ -24,13 +24,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build UI
+        run: pnpm run build:ui
+
+      - name: Deploy UI
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+
       - name: Build package
         run: pnpm run build:package
 
-      - name: Deploy UI
-        run: pnpm run deploy
-
-      - name: Publish
+      - name: Publish package
         run: npm pkg delete scripts.prepare && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
