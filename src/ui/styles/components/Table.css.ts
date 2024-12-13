@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css"
-import { colors, vars } from "./ui/styles/themes"
-import { interFont } from "./ui/styles/tokens"
+import { colors, vars } from "../themes"
+import { interFont } from "../tokens"
 
 export const tableWrapperStyle = style([
   interFont["500"],
