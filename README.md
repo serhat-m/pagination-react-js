@@ -13,22 +13,23 @@ import { usePagination, generateTestData } from "pagination-react-js"
 
 type PaginationItemProps = {
   children: React.ReactNode
-  label: React.ComponentProps<"li">["aria-label"]
+  label: React.ComponentProps<"button">["aria-label"]
   active?: boolean
-  onClick?: React.ComponentProps<"li">["onClick"]
-  rel?: React.ComponentProps<"li">["rel"]
+  onClick: React.ComponentProps<"button">["onClick"]
 }
 
-const PaginationItem = ({ children, label, active, onClick, rel }: PaginationItemProps) => {
+const PaginationItem = ({ children, label, active, onClick }: PaginationItemProps) => {
   return (
-    <li
-      className={["pagination-item", active ? "pagination-item-active" : undefined].filter((value) => value).join(" ")}
-      aria-current={active ?? "page"}
-      aria-label={label}
-      rel={rel}
-      onClick={onClick}
-    >
-      {children}
+    <li>
+      <button
+        type="button"
+        className={["pagination-item", active ? "pagination-item-active" : undefined].filter((value) => value).join(" ")}
+        onClick={onClick}
+        aria-current={active ?? "page"}
+        aria-label={label}
+      >
+        {children}
+      </button>
     </li>
   )
 }
@@ -68,21 +69,13 @@ const Pagination = () => {
         </tbody>
       </table>
 
-      <nav role="navigation" aria-label="Pagination Navigation">
+      <nav aria-label="Page navigation">
         <ul className="pagination">
-          <PaginationItem
-            label={`Goto first page ${pageNumbers.firstPage}`}
-            rel="first"
-            onClick={() => updateActivePage(pageNumbers.firstPage)}
-          >
+          <PaginationItem label={`Goto first page ${pageNumbers.firstPage}`} onClick={() => updateActivePage(pageNumbers.firstPage)}>
             &laquo;
           </PaginationItem>
 
-          <PaginationItem
-            label={`Goto previous page ${pageNumbers.previousPage}`}
-            rel="prev"
-            onClick={() => updateActivePage(pageNumbers.previousPage)}
-          >
+          <PaginationItem label={`Goto previous page ${pageNumbers.previousPage}`} onClick={() => updateActivePage(pageNumbers.previousPage)}>
             &lsaquo;
           </PaginationItem>
 
@@ -95,10 +88,7 @@ const Pagination = () => {
           </PaginationItem>
 
           {pageNumbers.customPreviousPage && (
-            <PaginationItem
-              label={`Goto page ${pageNumbers.customPreviousPage}`}
-              onClick={() => updateActivePage(pageNumbers.customPreviousPage)}
-            >
+            <PaginationItem label={`Goto page ${pageNumbers.customPreviousPage}`} onClick={() => updateActivePage(pageNumbers.customPreviousPage)}>
               &middot;&middot;&middot;
             </PaginationItem>
           )}
@@ -134,19 +124,11 @@ const Pagination = () => {
             </PaginationItem>
           )}
 
-          <PaginationItem
-            label={`Goto next page ${pageNumbers.nextPage}`}
-            rel="next"
-            onClick={() => updateActivePage(pageNumbers.nextPage)}
-          >
+          <PaginationItem label={`Goto next page ${pageNumbers.nextPage}`} onClick={() => updateActivePage(pageNumbers.nextPage)}>
             &rsaquo;
           </PaginationItem>
 
-          <PaginationItem
-            label={`Goto last page ${pageNumbers.lastPage}`}
-            rel="last"
-            onClick={() => updateActivePage(pageNumbers.lastPage)}
-          >
+          <PaginationItem label={`Goto last page ${pageNumbers.lastPage}`} onClick={() => updateActivePage(pageNumbers.lastPage)}>
             &raquo;
           </PaginationItem>
         </ul>
@@ -160,8 +142,9 @@ const Pagination = () => {
 
 ```css
 :root {
-  --border-size: 2px;
-  --border-radius: 5px;
+  font-size: 16px;
+  --border-size: 0.125rem;
+  --border-radius: 0.3rem;
   --color-gray: #e1e4e7;
   --color-active: #0a7ea3;
 }
@@ -170,18 +153,18 @@ const Pagination = () => {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 7px;
+  gap: 0.5rem;
   width: fit-content;
-  list-style-type: unset;
+  list-style-type: none;
+  padding: 0.5rem 0.625rem;
   border: var(--border-size) solid var(--color-gray);
-  padding: 8px 10px;
   border-radius: var(--border-radius);
   user-select: none;
 }
 
 .pagination-item {
-  width: 30px;
-  height: 30px;
+  width: 2rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -191,14 +174,12 @@ const Pagination = () => {
 .pagination-item:hover {
   cursor: pointer;
   background-color: var(--color-gray);
-  transition: background-color 0.1s linear;
 }
 
 .pagination-item-active {
   color: white;
   background-color: var(--color-active);
   pointer-events: none;
-  transition: background-color 0.1s linear;
 }
 ```
 
@@ -241,7 +222,7 @@ type TPaginationData = {
     customNextPage: number | false // custom next page number
     navigation: number[] // array of navigation numbers
   }
-  readonly setActivePage: (pageNumber: number) => void // setter method to update the active page
-  readonly setRecordsPerPage: (recordsPerPage: number) => void // setter method to update the records per page
+  readonly setActivePage: (pageNumber: number) => void // function to update the active page
+  readonly setRecordsPerPage: (recordsPerPage: number) => void // function to update the records per page
 }
 ```

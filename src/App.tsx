@@ -1,25 +1,47 @@
-import React from "react"
-import generateTestData from "./functions/generateTestData"
-import { usePagination } from "./hooks/usePagination"
+import type React from "react"
+import { usePagination } from "./package"
+import { generateTestData } from "./package/utils"
+
+import {
+  headerStyle,
+  mainStyle,
+  maxElementsSelectStyle,
+  paginationItemActiveStyle,
+  paginationItemStyle,
+  paginationStyle,
+  paginationWrapperStyle,
+} from "./ui/styles/App.css"
+import {
+  tableBodyRowStyle,
+  tableCellStyle,
+  tableHeadStyle,
+  tableHeaderCellStyle,
+  tableStyle,
+  tableWrapperStyle,
+} from "./ui/styles/components/Table.css"
+import { selectStyle } from "./ui/styles/components/select.css"
+import { light } from "./ui/styles/themes"
+import { joinClassNames } from "./ui/utils/joinClassNames/joinClassNames"
 
 type PaginationItemProps = {
   children: React.ReactNode
-  label: React.ComponentProps<"li">["aria-label"]
+  label: React.ComponentProps<"button">["aria-label"]
   active?: boolean
-  onClick?: React.ComponentProps<"li">["onClick"]
-  rel?: React.ComponentProps<"li">["rel"]
+  onClick: React.ComponentProps<"button">["onClick"]
 }
 
-const PaginationItem = ({ children, label, active, onClick, rel }: PaginationItemProps) => {
+const PaginationItem = ({ children, label, active, onClick }: PaginationItemProps) => {
   return (
-    <li
-      className={["pagination-item", active ? "pagination-item-active" : undefined].filter((value) => value).join(" ")}
-      aria-current={active ?? "page"}
-      aria-label={label}
-      rel={rel}
-      onClick={onClick}
-    >
-      {children}
+    <li>
+      <button
+        type="button"
+        className={joinClassNames(paginationItemStyle, active && paginationItemActiveStyle)}
+        onClick={onClick}
+        aria-current={active ?? "page"}
+        aria-label={label}
+      >
+        {children}
+      </button>
     </li>
   )
 }
@@ -48,11 +70,12 @@ const App = () => {
   }
 
   return (
-    <div className="container">
-      <header className="mb-2">
-        <div className="select-wrapper max-elements">
+    <div className={light}>
+      <header className={headerStyle}>
+        <div className={maxElementsSelectStyle}>
           <label htmlFor="max-elements">Records per page:</label>
           <select
+            className={selectStyle}
             name="max-elements"
             id="max-elements"
             onChange={(e) => {
@@ -70,127 +93,107 @@ const App = () => {
         <span>Showing {`${records.indexOfFirst + 1}-${records.indexOfLast + 1} of ${dataList.length}`}</span>
       </header>
 
-      <div className="example-table">
-        <table>
-          <thead>
-            <tr>
-              <th title="Id" className="table-id">
-                Id
-              </th>
-              <th title="Name" className="table-name">
-                Name
-              </th>
-              <th title="Gender" className="table-gender">
-                Gender
-              </th>
-              <th title="Position" className="table-position">
-                Position
-              </th>
-              <th title="E-Mail" className="table-email">
-                E-Mail
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* + 1 is added to indexOfLast, because the end is not included in slice */}
-            {dataList.slice(records.indexOfFirst, records.indexOfLast + 1).map((record, i) => {
-              return (
-                <tr key={i}>
-                  <td className="table-id">{record.id}</td>
-                  <td className="table-name">{record.name}</td>
-                  <td className="table-gender">{record.gender}</td>
-                  <td className="table-position">{record.position}</td>
-                  <td className="table-email">{record.email}</td>
+      <main className={mainStyle}>
+        <div className={tableWrapperStyle}>
+          <table className={tableStyle}>
+            <thead className={tableHeadStyle}>
+              <tr>
+                <th title="Id" className={tableHeaderCellStyle}>
+                  Id
+                </th>
+                <th title="Name" className={tableHeaderCellStyle}>
+                  Name
+                </th>
+                <th title="Gender" className={tableHeaderCellStyle}>
+                  Gender
+                </th>
+                <th title="Position" className={tableHeaderCellStyle}>
+                  Position
+                </th>
+                <th title="E-Mail" className={tableHeaderCellStyle}>
+                  E-Mail
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {dataList.slice(records.indexOfFirst, records.indexOfLast + 1).map((record) => (
+                <tr key={record.id} className={tableBodyRowStyle}>
+                  <td className={tableCellStyle}>{record.id}</td>
+                  <td className={tableCellStyle}>{record.name}</td>
+                  <td className={tableCellStyle}>{record.gender}</td>
+                  <td className={tableCellStyle}>{record.position}</td>
+                  <td className={tableCellStyle}>{record.email}</td>
                 </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <nav className={paginationWrapperStyle} aria-label="Table navigation">
+          <ul className={paginationStyle}>
+            <PaginationItem label={`Goto first page ${pageNumbers.firstPage}`} onClick={() => updateActivePage(pageNumbers.firstPage)}>
+              &laquo;
+            </PaginationItem>
+
+            <PaginationItem label={`Goto previous page ${pageNumbers.previousPage}`} onClick={() => updateActivePage(pageNumbers.previousPage)}>
+              &lsaquo;
+            </PaginationItem>
+
+            <PaginationItem
+              label={`Goto first page ${pageNumbers.firstPage}`}
+              active={pageNumbers.firstPage === pageNumbers.activePage}
+              onClick={() => updateActivePage(pageNumbers.firstPage)}
+            >
+              {pageNumbers.firstPage}
+            </PaginationItem>
+
+            {pageNumbers.customPreviousPage && (
+              <PaginationItem label={`Goto page ${pageNumbers.customPreviousPage}`} onClick={() => updateActivePage(pageNumbers.customPreviousPage)}>
+                &middot;&middot;&middot;
+              </PaginationItem>
+            )}
+
+            {pageNumbers.navigation.map((navigationNumber) => {
+              const isFirstOrLastPage = navigationNumber === pageNumbers.firstPage || navigationNumber === pageNumbers.lastPage
+
+              return isFirstOrLastPage ? null : (
+                <PaginationItem
+                  label={`Goto page ${navigationNumber}`}
+                  key={navigationNumber}
+                  active={navigationNumber === pageNumbers.activePage}
+                  onClick={() => updateActivePage(navigationNumber)}
+                >
+                  {navigationNumber}
+                </PaginationItem>
               )
             })}
-          </tbody>
-        </table>
-      </div>
 
-      <nav role="navigation" aria-label="Pagination Navigation">
-        <ul className="pagination m-auto mt-2">
-          <PaginationItem
-            label={`Goto first page ${pageNumbers.firstPage}`}
-            rel="first"
-            onClick={() => updateActivePage(pageNumbers.firstPage)}
-          >
-            &laquo;
-          </PaginationItem>
-
-          <PaginationItem
-            label={`Goto previous page ${pageNumbers.previousPage}`}
-            rel="prev"
-            onClick={() => updateActivePage(pageNumbers.previousPage)}
-          >
-            &lsaquo;
-          </PaginationItem>
-
-          <PaginationItem
-            label={`Goto first page ${pageNumbers.firstPage}`}
-            active={pageNumbers.firstPage === pageNumbers.activePage}
-            onClick={() => updateActivePage(pageNumbers.firstPage)}
-          >
-            {pageNumbers.firstPage}
-          </PaginationItem>
-
-          {pageNumbers.customPreviousPage && (
-            <PaginationItem
-              label={`Goto page ${pageNumbers.customPreviousPage}`}
-              onClick={() => updateActivePage(pageNumbers.customPreviousPage)}
-            >
-              &middot;&middot;&middot;
-            </PaginationItem>
-          )}
-
-          {pageNumbers.navigation.map((navigationNumber) => {
-            const isFirstOrLastPage = navigationNumber === pageNumbers.firstPage || navigationNumber === pageNumbers.lastPage
-
-            return isFirstOrLastPage ? null : (
-              <PaginationItem
-                label={`Goto page ${navigationNumber}`}
-                key={navigationNumber}
-                active={navigationNumber === pageNumbers.activePage}
-                onClick={() => updateActivePage(navigationNumber)}
-              >
-                {navigationNumber}
+            {pageNumbers.customNextPage && (
+              <PaginationItem label={`Goto page ${pageNumbers.customNextPage}`} onClick={() => updateActivePage(pageNumbers.customNextPage)}>
+                &middot;&middot;&middot;
               </PaginationItem>
-            )
-          })}
+            )}
 
-          {pageNumbers.customNextPage && (
-            <PaginationItem label={`Goto page ${pageNumbers.customNextPage}`} onClick={() => updateActivePage(pageNumbers.customNextPage)}>
-              &middot;&middot;&middot;
+            {pageNumbers.firstPage !== pageNumbers.lastPage && (
+              <PaginationItem
+                label={`Goto last page ${pageNumbers.lastPage}`}
+                active={pageNumbers.lastPage === pageNumbers.activePage}
+                onClick={() => updateActivePage(pageNumbers.lastPage)}
+              >
+                {pageNumbers.lastPage}
+              </PaginationItem>
+            )}
+
+            <PaginationItem label={`Goto next page ${pageNumbers.nextPage}`} onClick={() => updateActivePage(pageNumbers.nextPage)}>
+              &rsaquo;
             </PaginationItem>
-          )}
 
-          {pageNumbers.firstPage !== pageNumbers.lastPage && (
-            <PaginationItem
-              label={`Goto last page ${pageNumbers.lastPage}`}
-              active={pageNumbers.lastPage === pageNumbers.activePage}
-              onClick={() => updateActivePage(pageNumbers.lastPage)}
-            >
-              {pageNumbers.lastPage}
+            <PaginationItem label={`Goto last page ${pageNumbers.lastPage}`} onClick={() => updateActivePage(pageNumbers.lastPage)}>
+              &raquo;
             </PaginationItem>
-          )}
-
-          <PaginationItem
-            label={`Goto next page ${pageNumbers.nextPage}`}
-            rel="next"
-            onClick={() => updateActivePage(pageNumbers.nextPage)}
-          >
-            &rsaquo;
-          </PaginationItem>
-
-          <PaginationItem
-            label={`Goto last page ${pageNumbers.lastPage}`}
-            rel="last"
-            onClick={() => updateActivePage(pageNumbers.lastPage)}
-          >
-            &raquo;
-          </PaginationItem>
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      </main>
     </div>
   )
 }

@@ -1,12 +1,11 @@
-name: Publish ui and package
+name: Run tests
 
 on:
-  release:
-    types: [created]
+  push:
   workflow_dispatch: # Allows manual trigger
 
 jobs:
-  publish:
+  test:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
@@ -24,13 +23,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build package
-        run: pnpm run build:package
+      - name: Run linter
+        run: pnpm run lint
 
-      - name: Deploy UI
-        run: pnpm run deploy
-
-      - name: Publish
-        run: npm pkg delete scripts.prepare && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+      - name: Run tests
+        run: pnpm run test

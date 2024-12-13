@@ -1,6 +1,4 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-. "$(dirname -- "$0")/utils.sh"
+. "$(dirname -- "$0")/utils/utils.sh"
 
 print_message "🔎 Check if the commit message matches the pattern of conventional commits"
-npx --no -- commitlint --edit ${1}
+pnpm exec commitlint --edit ${1}
