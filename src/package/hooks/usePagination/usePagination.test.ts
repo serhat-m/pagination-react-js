@@ -103,22 +103,23 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers.previousPage).toBe(false)
-    expect(result.current.pageNumbers.nextPage).toBe(2)
+    expect(result.current.pageNumbers?.previousPage).toBe(false)
+    expect(result.current.pageNumbers?.nextPage).toBe(2)
 
     act(() => {
-      result.current.setActivePage(result.current.pageNumbers.lastPage)
+      const lastPage = result.current.pageNumbers?.lastPage
+      lastPage && result.current.setActivePage(lastPage)
     })
 
-    expect(result.current.pageNumbers.previousPage).toBe(49)
-    expect(result.current.pageNumbers.nextPage).toBe(false)
+    expect(result.current.pageNumbers?.previousPage).toBe(49)
+    expect(result.current.pageNumbers?.nextPage).toBe(false)
 
     act(() => {
       result.current.setActivePage(20)
     })
 
-    expect(result.current.pageNumbers.previousPage).toBe(19)
-    expect(result.current.pageNumbers.nextPage).toBe(21)
+    expect(result.current.pageNumbers?.previousPage).toBe(19)
+    expect(result.current.pageNumbers?.nextPage).toBe(21)
   })
 
   it("should return correct custom page navigation values", () => {
@@ -132,22 +133,23 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers.customPreviousPage).toBe(false)
-    expect(result.current.pageNumbers.customNextPage).toBe(4)
+    expect(result.current.pageNumbers?.customPreviousPage).toBe(false)
+    expect(result.current.pageNumbers?.customNextPage).toBe(4)
 
     act(() => {
-      result.current.setActivePage(result.current.pageNumbers.lastPage)
+      const lastPage = result.current.pageNumbers?.lastPage
+      lastPage && result.current.setActivePage(lastPage)
     })
 
-    expect(result.current.pageNumbers.customPreviousPage).toBe(47)
-    expect(result.current.pageNumbers.customNextPage).toBe(false)
+    expect(result.current.pageNumbers?.customPreviousPage).toBe(47)
+    expect(result.current.pageNumbers?.customNextPage).toBe(false)
 
     act(() => {
       result.current.setActivePage(20)
     })
 
-    expect(result.current.pageNumbers.customPreviousPage).toBe(17)
-    expect(result.current.pageNumbers.customNextPage).toBe(23)
+    expect(result.current.pageNumbers?.customPreviousPage).toBe(17)
+    expect(result.current.pageNumbers?.customNextPage).toBe(23)
   })
 
   it("should return correct first and last page number", () => {
@@ -161,8 +163,8 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers.firstPage).toBe(1)
-    expect(result.current.pageNumbers.lastPage).toBe(50)
+    expect(result.current.pageNumbers?.firstPage).toBe(1)
+    expect(result.current.pageNumbers?.lastPage).toBe(50)
   })
 
   it("should return correct current page number and setter", () => {
@@ -176,13 +178,13 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers.activePage).toBe(1)
+    expect(result.current.pageNumbers?.activePage).toBe(1)
 
     act(() => {
       result.current.setActivePage(4)
     })
 
-    expect(result.current.pageNumbers.activePage).toBe(4)
+    expect(result.current.pageNumbers?.activePage).toBe(4)
   })
 
   it("should return correct records per page number and setter", () => {
@@ -216,12 +218,78 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers.navigation).toEqual([1, 2, 3, 4, 5, 6, 7])
+    expect(result.current.pageNumbers?.navigation).toEqual([1, 2, 3, 4, 5, 6, 7])
 
     act(() => {
       result.current.setActivePage(7)
     })
 
-    expect(result.current.pageNumbers.navigation).toEqual([4, 5, 6, 7, 8, 9, 10])
+    expect(result.current.pageNumbers?.navigation).toEqual([4, 5, 6, 7, 8, 9, 10])
+  })
+
+  it("should throw an error when totalRecordsLength is negative", () => {
+    expect(() =>
+      renderHook(() =>
+        usePagination({
+          activePage: 1,
+          recordsPerPage: 10,
+          totalRecordsLength: -5,
+          offset: 2,
+        }),
+      ),
+    ).toThrow("totalRecordsLength cannot be negative")
+  })
+
+  it("should throw an error when recordsPerPage is zero", () => {
+    expect(() =>
+      renderHook(() =>
+        usePagination({
+          activePage: 1,
+          recordsPerPage: 0,
+          totalRecordsLength: 100,
+          offset: 2,
+        }),
+      ),
+    ).toThrow("recordsPerPage must be greater than zero")
+  })
+
+  it("should throw an error when recordsPerPage is negative", () => {
+    expect(() =>
+      renderHook(() =>
+        usePagination({
+          activePage: 1,
+          recordsPerPage: -10,
+          totalRecordsLength: 100,
+          offset: 2,
+        }),
+      ),
+    ).toThrow("recordsPerPage must be greater than zero")
+  })
+
+  it("should throw an error when activePage is less than 1", () => {
+    expect(() =>
+      renderHook(() =>
+        usePagination({
+          activePage: 0,
+          recordsPerPage: 10,
+          totalRecordsLength: 100,
+          offset: 2,
+        }),
+      ),
+    ).toThrow("activePage must be at least 1")
+  })
+
+  it("should return null for pageNumbers when there are no records", () => {
+    const { result } = renderHook(() =>
+      usePagination({
+        activePage: 1,
+        recordsPerPage: 10,
+        totalRecordsLength: 0,
+        offset: 3,
+        navCustomPageSteps: { prev: 3, next: 3 },
+      }),
+    )
+
+    expect(result.current.pageNumbers).toBeNull()
   })
 })

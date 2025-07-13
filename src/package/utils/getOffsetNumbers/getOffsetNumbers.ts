@@ -1,7 +1,7 @@
 type OffsetNumbers = {
   pageNumbers: number[]
-  firstNumber: number
-  lastNumber: number
+  firstNumber: number | undefined
+  lastNumber: number | undefined
   activeNumber: number
   offset: number
   permanentFirstNumber?: boolean
@@ -17,12 +17,16 @@ export function getOffsetNumbers({
   permanentFirstNumber,
   permanentLastNumber,
 }: OffsetNumbers) {
+  const pageOffsetNumbers: number[] = []
+
+  if (!firstNumber || !lastNumber) {
+    return { pageOffsetNumbers }
+  }
+
   // Example: Offset: 3, Current page: 1
   // With these settings there is no possible offset before page 1 -> [] 1 [2 3 4]. The goal is to always return (offset * 2 + activeNumber) values -> In this case 1 [2 3 4] [6 7 8]
   const additionalOffsetStart = firstNumber + offset * 2 + (permanentFirstNumber ? 1 : 0)
   const additionalOffsetEnd = lastNumber - offset * 2 - (permanentLastNumber ? 1 : 0)
-
-  const pageOffsetNumbers: number[] = []
 
   for (const pageNumber of pageNumbers) {
     if (

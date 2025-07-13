@@ -5,6 +5,40 @@ const pageNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 const firstNumber = pageNumbers[0]
 const lastNumber = pageNumbers[pageNumbers.length - 1]
 
+describe("missing values", () => {
+  it("should return empty array if firstNumber is missing", () => {
+    const activeNumber = 8
+
+    const result = getOffsetNumbers({
+      pageNumbers,
+      firstNumber: undefined,
+      lastNumber,
+      activeNumber,
+      offset: 1,
+    })
+
+    expect(result).toEqual({
+      pageOffsetNumbers: [],
+    })
+  })
+
+  it("should return empty array if lastNumber is missing", () => {
+    const activeNumber = 8
+
+    const result = getOffsetNumbers({
+      pageNumbers,
+      firstNumber,
+      lastNumber: undefined,
+      activeNumber,
+      offset: 1,
+    })
+
+    expect(result).toEqual({
+      pageOffsetNumbers: [],
+    })
+  })
+})
+
 describe("offset odd (1)", () => {
   const offset = 1
 

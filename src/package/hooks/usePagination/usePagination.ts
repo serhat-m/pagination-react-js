@@ -16,7 +16,7 @@ export type TPaginationData = {
     customPreviousPage: number | false
     customNextPage: number | false
     navigation: number[]
-  }
+  } | null
   readonly setActivePage: (pageNumber: number) => void
   readonly setRecordsPerPage: (recordsPerPage: number) => void
 }
@@ -45,7 +45,20 @@ export function usePagination({
   const indexOfLastRecord = (recordsPerPage > totalRecordsLength ? totalRecordsLength : activePage * recordsPerPage) - 1
   const indexOfFirstRecord = recordsPerPage > indexOfLastRecord ? 0 : indexOfLastRecord - recordsPerPage + 1
 
+  if (totalRecordsLength < 0) {
+    throw new Error("totalRecordsLength cannot be negative")
+  }
+
+  if (recordsPerPage <= 0) {
+    throw new Error("recordsPerPage must be greater than zero")
+  }
+
+  if (activePage <= 0) {
+    throw new Error("activePage must be at least 1")
+  }
+
   const pageNumbers = generateNumArr(1, Math.ceil(totalRecordsLength / recordsPerPage))
+
   const firstPage = pageNumbers[0]
   const lastPage = pageNumbers[pageNumbers.length - 1]
 
@@ -65,18 +78,25 @@ export function usePagination({
       indexOfFirst: indexOfFirstRecord,
       indexOfLast: indexOfLastRecord,
     },
-    pageNumbers: {
-      activePage,
-      firstPage,
-      lastPage,
-      previousPage: activePage > firstPage ? activePage - 1 : false,
-      nextPage: activePage < lastPage ? activePage + 1 : false,
-      customPreviousPage:
-        navCustomPageSteps?.prev && activePage - navCustomPageSteps.prev >= firstPage + 1 ? activePage - navCustomPageSteps.prev : false,
-      customNextPage:
-        navCustomPageSteps?.next && activePage + navCustomPageSteps.next <= lastPage - 1 ? activePage + navCustomPageSteps.next : false,
-      navigation: pageOffsetNumbers,
-    },
+    pageNumbers:
+      firstPage && lastPage
+        ? {
+            activePage,
+            firstPage,
+            lastPage,
+            previousPage: activePage > firstPage ? activePage - 1 : false,
+            nextPage: activePage < lastPage ? activePage + 1 : false,
+            customPreviousPage:
+              navCustomPageSteps?.prev && activePage - navCustomPageSteps.prev >= firstPage + 1
+                ? activePage - navCustomPageSteps.prev
+                : false,
+            customNextPage:
+              navCustomPageSteps?.next && activePage + navCustomPageSteps.next <= lastPage - 1
+                ? activePage + navCustomPageSteps.next
+                : false,
+            navigation: pageOffsetNumbers,
+          }
+        : null,
     setRecordsPerPage: (recordsPerPage) => {
       setRecordsPerPage(recordsPerPage)
     },
