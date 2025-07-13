@@ -9,7 +9,7 @@ https://serhat-m.github.io/pagination-react-js
 This is an example of fully customizable pagination:
 
 ```tsx
-import { usePagination, generateTestData } from "pagination-react-js"
+import { usePagination } from "pagination-react-js"
 
 type PaginationItemProps = {
   children: React.ReactNode
@@ -35,9 +35,9 @@ const PaginationItem = ({ children, label, active, onClick }: PaginationItemProp
 }
 
 const Pagination = () => {
-  const dataList = generateTestData(700, (i) => ({
-    id: `Id${i}`,
-    name: `Name${i}`,
+  const dataList = Array.from({ length: 400 }, (_, index) => ({
+    id: `Id${index + 1}`,
+    name: `Name${index + 1}`,
   }))
 
   const { records, pageNumbers, setActivePage, setRecordsPerPage } = usePagination({
@@ -69,70 +69,81 @@ const Pagination = () => {
         </tbody>
       </table>
 
-      <nav aria-label="Page navigation">
-        <ul className="pagination">
-          <PaginationItem label={`Goto first page ${pageNumbers.firstPage}`} onClick={() => updateActivePage(pageNumbers.firstPage)}>
-            &laquo;
-          </PaginationItem>
-
-          <PaginationItem label={`Goto previous page ${pageNumbers.previousPage}`} onClick={() => updateActivePage(pageNumbers.previousPage)}>
-            &lsaquo;
-          </PaginationItem>
-
-          <PaginationItem
-            label={`Goto first page ${pageNumbers.firstPage}`}
-            active={pageNumbers.firstPage === pageNumbers.activePage}
-            onClick={() => updateActivePage(pageNumbers.firstPage)}
-          >
-            {pageNumbers.firstPage}
-          </PaginationItem>
-
-          {pageNumbers.customPreviousPage && (
-            <PaginationItem label={`Goto page ${pageNumbers.customPreviousPage}`} onClick={() => updateActivePage(pageNumbers.customPreviousPage)}>
-              &middot;&middot;&middot;
+      {pageNumbers && (
+        <nav aria-label="Page navigation">
+          <ul className="pagination">
+            <PaginationItem label={`Goto first page ${pageNumbers.firstPage}`} onClick={() => updateActivePage(pageNumbers.firstPage)}>
+              &laquo;
             </PaginationItem>
-          )}
 
-          {pageNumbers.navigation.map((navigationNumber) => {
-            const isFirstOrLastPage = navigationNumber === pageNumbers.firstPage || navigationNumber === pageNumbers.lastPage
-
-            return isFirstOrLastPage ? null : (
-              <PaginationItem
-                label={`Goto page ${navigationNumber}`}
-                key={navigationNumber}
-                active={navigationNumber === pageNumbers.activePage}
-                onClick={() => updateActivePage(navigationNumber)}
-              >
-                {navigationNumber}
-              </PaginationItem>
-            )
-          })}
-
-          {pageNumbers.customNextPage && (
-            <PaginationItem label={`Goto page ${pageNumbers.customNextPage}`} onClick={() => updateActivePage(pageNumbers.customNextPage)}>
-              &middot;&middot;&middot;
-            </PaginationItem>
-          )}
-
-          {pageNumbers.firstPage !== pageNumbers.lastPage && (
             <PaginationItem
-              label={`Goto last page ${pageNumbers.lastPage}`}
-              active={pageNumbers.lastPage === pageNumbers.activePage}
-              onClick={() => updateActivePage(pageNumbers.lastPage)}
+              label={`Goto previous page ${pageNumbers.previousPage}`}
+              onClick={() => updateActivePage(pageNumbers.previousPage)}
             >
-              {pageNumbers.lastPage}
+              &lsaquo;
             </PaginationItem>
-          )}
 
-          <PaginationItem label={`Goto next page ${pageNumbers.nextPage}`} onClick={() => updateActivePage(pageNumbers.nextPage)}>
-            &rsaquo;
-          </PaginationItem>
+            <PaginationItem
+              label={`Goto first page ${pageNumbers.firstPage}`}
+              active={pageNumbers.firstPage === pageNumbers.activePage}
+              onClick={() => updateActivePage(pageNumbers.firstPage)}
+            >
+              {pageNumbers.firstPage}
+            </PaginationItem>
 
-          <PaginationItem label={`Goto last page ${pageNumbers.lastPage}`} onClick={() => updateActivePage(pageNumbers.lastPage)}>
-            &raquo;
-          </PaginationItem>
-        </ul>
-      </nav>
+            {pageNumbers.customPreviousPage && (
+              <PaginationItem
+                label={`Goto page ${pageNumbers.customPreviousPage}`}
+                onClick={() => updateActivePage(pageNumbers.customPreviousPage)}
+              >
+                &middot;&middot;&middot;
+              </PaginationItem>
+            )}
+
+            {pageNumbers.navigation.map((navigationNumber) => {
+              const isFirstOrLastPage = navigationNumber === pageNumbers.firstPage || navigationNumber === pageNumbers.lastPage
+
+              return isFirstOrLastPage ? null : (
+                <PaginationItem
+                  label={`Goto page ${navigationNumber}`}
+                  key={navigationNumber}
+                  active={navigationNumber === pageNumbers.activePage}
+                  onClick={() => updateActivePage(navigationNumber)}
+                >
+                  {navigationNumber}
+                </PaginationItem>
+              )
+            })}
+
+            {pageNumbers.customNextPage && (
+              <PaginationItem
+                label={`Goto page ${pageNumbers.customNextPage}`}
+                onClick={() => updateActivePage(pageNumbers.customNextPage)}
+              >
+                &middot;&middot;&middot;
+              </PaginationItem>
+            )}
+
+            {pageNumbers.firstPage !== pageNumbers.lastPage && (
+              <PaginationItem
+                label={`Goto last page ${pageNumbers.lastPage}`}
+                active={pageNumbers.lastPage === pageNumbers.activePage}
+                onClick={() => updateActivePage(pageNumbers.lastPage)}
+              >
+                {pageNumbers.lastPage}
+              </PaginationItem>
+            )}
+
+            <PaginationItem label={`Goto next page ${pageNumbers.nextPage}`} onClick={() => updateActivePage(pageNumbers.nextPage)}>
+              &rsaquo;
+            </PaginationItem>
+
+            <PaginationItem label={`Goto last page ${pageNumbers.lastPage}`} onClick={() => updateActivePage(pageNumbers.lastPage)}>
+              &raquo;
+            </PaginationItem>
+          </ul>
+        </nav>
+      )}
     </div>
   )
 }
@@ -142,45 +153,15 @@ const Pagination = () => {
 
 ```css
 :root {
-  font-size: 16px;
-  --border-size: 0.125rem;
-  --border-radius: 0.3rem;
-  --color-gray: #e1e4e7;
-  --color-active: #0a7ea3;
-}
-
+  font-size: 16px;  --border-size: 0.125rem;  --border-radius: 0.3rem;  --color-gray: #e1e4e7;  --color-active: #0a7ea3;}
 .pagination {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 0.5rem;
-  width: fit-content;
-  list-style-type: none;
-  padding: 0.5rem 0.625rem;
-  border: var(--border-size) solid var(--color-gray);
-  border-radius: var(--border-radius);
-  user-select: none;
-}
-
+  display: flex;  flex-direction: row;  justify-content: center;  gap: 0.5rem;  width: fit-content;  list-style-type: none;  padding: 0.5rem 0.625rem;  border: var(--border-size) solid var(--color-gray);  border-radius: var(--border-radius);  user-select: none;}
 .pagination-item {
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--border-radius);
-}
-
+  width: 2rem;  height: 2rem;  display: flex;  align-items: center;  justify-content: center;  border-radius: var(--border-radius);}
 .pagination-item:hover {
-  cursor: pointer;
-  background-color: var(--color-gray);
-}
-
+  cursor: pointer;  background-color: var(--color-gray);}
 .pagination-item-active {
-  color: white;
-  background-color: var(--color-active);
-  pointer-events: none;
-}
+  color: white;  background-color: var(--color-active);  pointer-events: none;}
 ```
 
 # API
@@ -188,6 +169,8 @@ const Pagination = () => {
 ## `usePagination(options: TFnOptions): TPaginationData`
 
 ![pagination.svg](https://github-production-user-asset-6210df.s3.amazonaws.com/51929566/293516615-212f7044-29de-41d6-a1ab-85143dde8e7f.svg)
+
+pagination.svg
 
 ## `type TFnOptions`
 
@@ -221,7 +204,7 @@ type TPaginationData = {
     customPreviousPage: number | false // custom previous page number
     customNextPage: number | false // custom next page number
     navigation: number[] // array of navigation numbers
-  }
+  } | null
   readonly setActivePage: (pageNumber: number) => void // function to update the active page
   readonly setRecordsPerPage: (recordsPerPage: number) => void // function to update the records per page
 }
