@@ -1,7 +1,5 @@
 import type React from "react"
 import { usePagination } from "./package"
-import { generateTestData } from "./package/utils"
-
 import {
   headerStyle,
   mainStyle,
@@ -11,16 +9,17 @@ import {
   paginationStyle,
   paginationWrapperStyle,
 } from "./ui/styles/App.css"
+import { selectStyle } from "./ui/styles/components/select.css"
 import {
   tableBodyRowStyle,
   tableCellStyle,
-  tableHeadStyle,
   tableHeaderCellStyle,
+  tableHeadStyle,
   tableStyle,
   tableWrapperStyle,
 } from "./ui/styles/components/Table.css"
-import { selectStyle } from "./ui/styles/components/select.css"
 import { light } from "./ui/styles/themes"
+import { generateTestData } from "./ui/utils/generateTestData/generateTestData"
 import { joinClassNames } from "./ui/utils/joinClassNames/joinClassNames"
 
 type PaginationItemProps = {
@@ -47,12 +46,12 @@ const PaginationItem = ({ children, label, active, onClick }: PaginationItemProp
 }
 
 const App = () => {
-  const dataList = generateTestData(500, (i) => ({
-    id: i,
-    name: `Test ${i}`,
-    gender: i % 2 ? "Female" : "Male",
-    position: `Position ${i}`,
-    email: `test${i}@test.com`,
+  const dataList = generateTestData(500, (index) => ({
+    id: index,
+    name: `Test ${index}`,
+    gender: index % 2 ? "Female" : "Male",
+    position: `Position ${index}`,
+    email: `test${index}@test.com`,
   }))
 
   const { records, pageNumbers, setActivePage, setRecordsPerPage } = usePagination({
@@ -129,73 +128,85 @@ const App = () => {
           </table>
         </div>
 
-        <nav className={paginationWrapperStyle} aria-label="Table navigation">
-          <ul className={paginationStyle}>
-            <PaginationItem label={`Goto first page ${pageNumbers.firstPage}`} onClick={() => updateActivePage(pageNumbers.firstPage)}>
-              &laquo;
-            </PaginationItem>
-
-            <PaginationItem label={`Goto previous page ${pageNumbers.previousPage}`} onClick={() => updateActivePage(pageNumbers.previousPage)}>
-              &lsaquo;
-            </PaginationItem>
-
-            <PaginationItem
-              label={`Goto first page ${pageNumbers.firstPage}`}
-              active={pageNumbers.firstPage === pageNumbers.activePage}
-              onClick={() => updateActivePage(pageNumbers.firstPage)}
-            >
-              {pageNumbers.firstPage}
-            </PaginationItem>
-
-            {pageNumbers.customPreviousPage && (
-              <PaginationItem label={`Goto page ${pageNumbers.customPreviousPage}`} onClick={() => updateActivePage(pageNumbers.customPreviousPage)}>
-                &middot;&middot;&middot;
+        {pageNumbers && (
+          <nav className={paginationWrapperStyle} aria-label="Table navigation">
+            <ul className={paginationStyle}>
+              <PaginationItem label={`Goto first page ${pageNumbers.firstPage}`} onClick={() => updateActivePage(pageNumbers.firstPage)}>
+                &laquo;
               </PaginationItem>
-            )}
 
-            {pageNumbers.navigation.map((navigationNumber) => {
-              const isFirstOrLastPage = navigationNumber === pageNumbers.firstPage || navigationNumber === pageNumbers.lastPage
-
-              return isFirstOrLastPage ? null : (
-                <PaginationItem
-                  label={`Goto page ${navigationNumber}`}
-                  key={navigationNumber}
-                  active={navigationNumber === pageNumbers.activePage}
-                  onClick={() => updateActivePage(navigationNumber)}
-                >
-                  {navigationNumber}
-                </PaginationItem>
-              )
-            })}
-
-            {pageNumbers.customNextPage && (
-              <PaginationItem label={`Goto page ${pageNumbers.customNextPage}`} onClick={() => updateActivePage(pageNumbers.customNextPage)}>
-                &middot;&middot;&middot;
-              </PaginationItem>
-            )}
-
-            {pageNumbers.firstPage !== pageNumbers.lastPage && (
               <PaginationItem
-                label={`Goto last page ${pageNumbers.lastPage}`}
-                active={pageNumbers.lastPage === pageNumbers.activePage}
-                onClick={() => updateActivePage(pageNumbers.lastPage)}
+                label={`Goto previous page ${pageNumbers.previousPage}`}
+                onClick={() => updateActivePage(pageNumbers.previousPage)}
               >
-                {pageNumbers.lastPage}
+                &lsaquo;
               </PaginationItem>
-            )}
 
-            <PaginationItem label={`Goto next page ${pageNumbers.nextPage}`} onClick={() => updateActivePage(pageNumbers.nextPage)}>
-              &rsaquo;
-            </PaginationItem>
+              <PaginationItem
+                label={`Goto first page ${pageNumbers.firstPage}`}
+                active={pageNumbers.firstPage === pageNumbers.activePage}
+                onClick={() => updateActivePage(pageNumbers.firstPage)}
+              >
+                {pageNumbers.firstPage}
+              </PaginationItem>
 
-            <PaginationItem label={`Goto last page ${pageNumbers.lastPage}`} onClick={() => updateActivePage(pageNumbers.lastPage)}>
-              &raquo;
-            </PaginationItem>
-          </ul>
-        </nav>
+              {pageNumbers.customPreviousPage && (
+                <PaginationItem
+                  label={`Goto page ${pageNumbers.customPreviousPage}`}
+                  onClick={() => updateActivePage(pageNumbers.customPreviousPage)}
+                >
+                  &middot;&middot;&middot;
+                </PaginationItem>
+              )}
+
+              {pageNumbers.navigation.map((navigationNumber) => {
+                const isFirstOrLastPage = navigationNumber === pageNumbers.firstPage || navigationNumber === pageNumbers.lastPage
+
+                return isFirstOrLastPage ? null : (
+                  <PaginationItem
+                    label={`Goto page ${navigationNumber}`}
+                    key={navigationNumber}
+                    active={navigationNumber === pageNumbers.activePage}
+                    onClick={() => updateActivePage(navigationNumber)}
+                  >
+                    {navigationNumber}
+                  </PaginationItem>
+                )
+              })}
+
+              {pageNumbers.customNextPage && (
+                <PaginationItem
+                  label={`Goto page ${pageNumbers.customNextPage}`}
+                  onClick={() => updateActivePage(pageNumbers.customNextPage)}
+                >
+                  &middot;&middot;&middot;
+                </PaginationItem>
+              )}
+
+              {pageNumbers.firstPage !== pageNumbers.lastPage && (
+                <PaginationItem
+                  label={`Goto last page ${pageNumbers.lastPage}`}
+                  active={pageNumbers.lastPage === pageNumbers.activePage}
+                  onClick={() => updateActivePage(pageNumbers.lastPage)}
+                >
+                  {pageNumbers.lastPage}
+                </PaginationItem>
+              )}
+
+              <PaginationItem label={`Goto next page ${pageNumbers.nextPage}`} onClick={() => updateActivePage(pageNumbers.nextPage)}>
+                &rsaquo;
+              </PaginationItem>
+
+              <PaginationItem label={`Goto last page ${pageNumbers.lastPage}`} onClick={() => updateActivePage(pageNumbers.lastPage)}>
+                &raquo;
+              </PaginationItem>
+            </ul>
+          </nav>
+        )}
       </main>
     </div>
   )
 }
 
+// biome-ignore lint/style/noDefaultExport: Entrypoint
 export default App
