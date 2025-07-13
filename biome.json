@@ -1,7 +1,7 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
   "files": {
-    "ignore": ["node_modules", "dist", "build", "package.json"]
+    "includes": ["**", "!**/node_modules", "!**/dist", "!**/build"]
   },
   "formatter": {
     "enabled": true,
@@ -14,7 +14,7 @@
       "quoteStyle": "double",
       "semicolons": "asNeeded",
       "trailingCommas": "all",
-      "lineWidth": 150
+      "lineWidth": 140
     }
   },
   "linter": {
@@ -30,7 +30,18 @@
         "useImportType": "error",
         "useExportType": "error",
         "noNamespace": "off",
-        "noDefaultExport": "off"
+        "noDefaultExport": "error",
+        "noParameterAssign": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useNumberNamespace": "error",
+        "noInferrableTypes": "error",
+        "noUselessElse": "error",
+        "useConsistentCurlyBraces": "error"
       },
       "suspicious": {
         "noEmptyInterface": "off",
@@ -47,7 +58,22 @@
       }
     }
   },
-  "organizeImports": {
-    "enabled": true
-  }
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "overrides": [
+    {
+      "includes": [
+        "**/commitlint.config.ts",
+        "**/vitest.config.ts",
+        "**/vite.config.ts",
+        "**/lint-staged.config.js"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    }
+  ]
 }

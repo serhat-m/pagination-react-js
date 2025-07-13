@@ -1,14 +1,29 @@
 {
   "name": "pagination-react-js",
+  "type": "module",
   "version": "2.1.2",
-  "private": false,
-  "license": "MIT",
   "engines": {
-    "node": ">=22.0.0 <23.0.0",
-    "pnpm": ">= 9.0.0"
+    "node": ">=24.0.0 <25.0.0",
+    "pnpm": ">= 10.0.0 <11.0.0"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "packageManager": "pnpm@10.13.1",
+  "private": false,
+  "author": "Serhat Mutlu",
+  "license": "MIT",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      }
+    }
+  },
   "homepage": "https://serhat-m.github.io/pagination-react-js",
   "repository": {
     "type": "git",
@@ -25,42 +40,35 @@
     "build:cjs": "tsc ./src/package/index.ts --moduleResolution Node --declaration --module CommonJS --jsx react-jsx --outDir dist/cjs",
     "build:package": "rm -rf dist && pnpm run build:esm && pnpm run build:cjs",
     "lint:staged": "lint-staged",
-    "lint": "tsc -b --noEmit && biome check .",
-    "lint:fix": "biome check . --write",
-    "format:check": "biome format .",
-    "format:fix": "biome format --write .",
+    "lint": "tsc -p tsconfig.json && biome check .",
+    "lint:fix": "biome check --write .",
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.6.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.1.0",
-    "@testing-library/user-event": "^14.5.2",
-    "@types/node": "^22.10.2",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.2",
-    "@vanilla-extract/css": "^1.16.1",
-    "@vanilla-extract/vite-plugin": "^4.0.18",
-    "@vitejs/plugin-react-swc": "^3.7.2",
-    "husky": "^9.1.7",
-    "jsdom": "^25.0.1",
-    "lint-staged": "^15.2.11",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "the-new-css-reset": "^1.11.3",
-    "typescript": "^5.7.2",
-    "vite": "^5.4.11",
-    "vitest": "^2.1.8"
-  },
-  "lint-staged": {
-    "**/*.{js,mjs,cjs,ts,mts,jsx,tsx,json}": [
-      "pnpm lint"
-    ]
+    "@biomejs/biome": "2.1.1",
+    "@commitlint/cli": "19.6.0",
+    "@commitlint/config-conventional": "19.6.0",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.1.0",
+    "@testing-library/user-event": "14.5.2",
+    "@types/node": "22.10.2",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2",
+    "@vanilla-extract/css": "1.16.1",
+    "@vanilla-extract/vite-plugin": "4.0.18",
+    "@vitejs/plugin-react-swc": "3.7.2",
+    "husky": "9.1.7",
+    "jsdom": "25.0.1",
+    "lint-staged": "15.2.11",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "the-new-css-reset": "1.11.3",
+    "typescript": "5.7.2",
+    "vite": "5.4.11",
+    "vitest": "2.1.8"
   },
   "peerDependencies": {
-    "react": "^17 || ^18 || ^19"
+    "react": "17 || 18 || 19"
   },
   "browserslist": {
     "production": [

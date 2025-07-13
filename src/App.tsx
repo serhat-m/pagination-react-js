@@ -11,15 +11,15 @@ import {
   paginationStyle,
   paginationWrapperStyle,
 } from "./ui/styles/App.css"
+import { selectStyle } from "./ui/styles/components/select.css"
 import {
   tableBodyRowStyle,
   tableCellStyle,
-  tableHeadStyle,
   tableHeaderCellStyle,
+  tableHeadStyle,
   tableStyle,
   tableWrapperStyle,
 } from "./ui/styles/components/Table.css"
-import { selectStyle } from "./ui/styles/components/select.css"
 import { light } from "./ui/styles/themes"
 import { joinClassNames } from "./ui/utils/joinClassNames/joinClassNames"
 
@@ -135,7 +135,10 @@ const App = () => {
               &laquo;
             </PaginationItem>
 
-            <PaginationItem label={`Goto previous page ${pageNumbers.previousPage}`} onClick={() => updateActivePage(pageNumbers.previousPage)}>
+            <PaginationItem
+              label={`Goto previous page ${pageNumbers.previousPage}`}
+              onClick={() => updateActivePage(pageNumbers.previousPage)}
+            >
               &lsaquo;
             </PaginationItem>
 
@@ -148,7 +151,10 @@ const App = () => {
             </PaginationItem>
 
             {pageNumbers.customPreviousPage && (
-              <PaginationItem label={`Goto page ${pageNumbers.customPreviousPage}`} onClick={() => updateActivePage(pageNumbers.customPreviousPage)}>
+              <PaginationItem
+                label={`Goto page ${pageNumbers.customPreviousPage}`}
+                onClick={() => updateActivePage(pageNumbers.customPreviousPage)}
+              >
                 &middot;&middot;&middot;
               </PaginationItem>
             )}
@@ -169,7 +175,10 @@ const App = () => {
             })}
 
             {pageNumbers.customNextPage && (
-              <PaginationItem label={`Goto page ${pageNumbers.customNextPage}`} onClick={() => updateActivePage(pageNumbers.customNextPage)}>
+              <PaginationItem
+                label={`Goto page ${pageNumbers.customNextPage}`}
+                onClick={() => updateActivePage(pageNumbers.customNextPage)}
+              >
                 &middot;&middot;&middot;
               </PaginationItem>
             )}
@@ -198,4 +207,5 @@ const App = () => {
   )
 }
 
+// biome-ignore lint/style/noDefaultExport: Entrypoint
 export default App

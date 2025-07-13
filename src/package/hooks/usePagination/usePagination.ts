@@ -73,7 +73,8 @@ export function usePagination({
       nextPage: activePage < lastPage ? activePage + 1 : false,
       customPreviousPage:
         navCustomPageSteps?.prev && activePage - navCustomPageSteps.prev >= firstPage + 1 ? activePage - navCustomPageSteps.prev : false,
-      customNextPage: navCustomPageSteps?.next && activePage + navCustomPageSteps.next <= lastPage - 1 ? activePage + navCustomPageSteps.next : false,
+      customNextPage:
+        navCustomPageSteps?.next && activePage + navCustomPageSteps.next <= lastPage - 1 ? activePage + navCustomPageSteps.next : false,
       navigation: pageOffsetNumbers,
     },
     setRecordsPerPage: (recordsPerPage) => {
