@@ -36,7 +36,7 @@ const PaginationItem = ({ children, label, active, onClick }: PaginationItemProp
         type="button"
         className={joinClassNames(paginationItemStyle, active && paginationItemActiveStyle)}
         onClick={onClick}
-        aria-current={active ?? "page"}
+        aria-current={active}
         aria-label={label}
       >
         {children}
@@ -54,7 +54,7 @@ const App = () => {
     email: `test${index}@test.com`,
   }))
 
-  const { records, pageNumbers, setActivePage, setRecordsPerPage } = usePagination({
+  const { records, pagination, setActivePage, setRecordsPerPage } = usePagination({
     activePage: 1,
     recordsPerPage: 10,
     totalRecordsLength: dataList.length,
@@ -64,7 +64,7 @@ const App = () => {
     permanentLastNumber: true,
   })
 
-  function updateActivePage(pageNumber: number | false) {
+  function updateActivePage(pageNumber: number | null) {
     pageNumber && setActivePage(pageNumber)
   }
 
@@ -128,76 +128,76 @@ const App = () => {
           </table>
         </div>
 
-        {pageNumbers && (
+        {pagination && (
           <nav className={paginationWrapperStyle} aria-label="Table navigation">
             <ul className={paginationStyle}>
-              <PaginationItem label={`Goto first page ${pageNumbers.firstPage}`} onClick={() => updateActivePage(pageNumbers.firstPage)}>
+              <PaginationItem label={`Goto first page ${pagination.firstPage}`} onClick={() => updateActivePage(pagination.firstPage)}>
                 &laquo;
               </PaginationItem>
 
               <PaginationItem
-                label={`Goto previous page ${pageNumbers.previousPage}`}
-                onClick={() => updateActivePage(pageNumbers.previousPage)}
+                label={`Goto previous page ${pagination.previousPage}`}
+                onClick={() => updateActivePage(pagination.previousPage)}
               >
                 &lsaquo;
               </PaginationItem>
 
               <PaginationItem
-                label={`Goto first page ${pageNumbers.firstPage}`}
-                active={pageNumbers.firstPage === pageNumbers.activePage}
-                onClick={() => updateActivePage(pageNumbers.firstPage)}
+                label={`Goto first page ${pagination.firstPage}`}
+                active={pagination.firstPage === pagination.activePage}
+                onClick={() => updateActivePage(pagination.firstPage)}
               >
-                {pageNumbers.firstPage}
+                {pagination.firstPage}
               </PaginationItem>
 
-              {pageNumbers.customPreviousPage && (
+              {pagination.customPreviousPage && (
                 <PaginationItem
-                  label={`Goto page ${pageNumbers.customPreviousPage}`}
-                  onClick={() => updateActivePage(pageNumbers.customPreviousPage)}
+                  label={`Goto page ${pagination.customPreviousPage}`}
+                  onClick={() => updateActivePage(pagination.customPreviousPage)}
                 >
                   &middot;&middot;&middot;
                 </PaginationItem>
               )}
 
-              {pageNumbers.navigation.map((navigationNumber) => {
-                const isFirstOrLastPage = navigationNumber === pageNumbers.firstPage || navigationNumber === pageNumbers.lastPage
+              {pagination.pageNumbers.map((paginationNumber) => {
+                const isFirstOrLastPage = paginationNumber === pagination.firstPage || paginationNumber === pagination.lastPage
 
                 return isFirstOrLastPage ? null : (
                   <PaginationItem
-                    label={`Goto page ${navigationNumber}`}
-                    key={navigationNumber}
-                    active={navigationNumber === pageNumbers.activePage}
-                    onClick={() => updateActivePage(navigationNumber)}
+                    label={`Goto page ${paginationNumber}`}
+                    key={paginationNumber}
+                    active={paginationNumber === pagination.activePage}
+                    onClick={() => updateActivePage(paginationNumber)}
                   >
-                    {navigationNumber}
+                    {paginationNumber}
                   </PaginationItem>
                 )
               })}
 
-              {pageNumbers.customNextPage && (
+              {pagination.customNextPage && (
                 <PaginationItem
-                  label={`Goto page ${pageNumbers.customNextPage}`}
-                  onClick={() => updateActivePage(pageNumbers.customNextPage)}
+                  label={`Goto page ${pagination.customNextPage}`}
+                  onClick={() => updateActivePage(pagination.customNextPage)}
                 >
                   &middot;&middot;&middot;
                 </PaginationItem>
               )}
 
-              {pageNumbers.firstPage !== pageNumbers.lastPage && (
+              {pagination.firstPage !== pagination.lastPage && (
                 <PaginationItem
-                  label={`Goto last page ${pageNumbers.lastPage}`}
-                  active={pageNumbers.lastPage === pageNumbers.activePage}
-                  onClick={() => updateActivePage(pageNumbers.lastPage)}
+                  label={`Goto last page ${pagination.lastPage}`}
+                  active={pagination.lastPage === pagination.activePage}
+                  onClick={() => updateActivePage(pagination.lastPage)}
                 >
-                  {pageNumbers.lastPage}
+                  {pagination.lastPage}
                 </PaginationItem>
               )}
 
-              <PaginationItem label={`Goto next page ${pageNumbers.nextPage}`} onClick={() => updateActivePage(pageNumbers.nextPage)}>
+              <PaginationItem label={`Goto next page ${pagination.nextPage}`} onClick={() => updateActivePage(pagination.nextPage)}>
                 &rsaquo;
               </PaginationItem>
 
-              <PaginationItem label={`Goto last page ${pageNumbers.lastPage}`} onClick={() => updateActivePage(pageNumbers.lastPage)}>
+              <PaginationItem label={`Goto last page ${pagination.lastPage}`} onClick={() => updateActivePage(pagination.lastPage)}>
                 &raquo;
               </PaginationItem>
             </ul>
