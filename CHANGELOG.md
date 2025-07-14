@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/serhat-m/pagination-react-js/compare/v3.0.1...v3.0.2) (2025-07-14)
+
+
+### Bug Fixes
+
+* readme class names ([d30e686](https://github.com/serhat-m/pagination-react-js/commit/d30e686cce183c02310b10b155be655a8d3b9d9a))
+
 ## [3.0.1](https://github.com/serhat-m/pagination-react-js/compare/v3.0.0...v3.0.1) (2025-07-14)
 
 
