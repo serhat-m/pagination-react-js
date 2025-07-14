@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { generateNumArr, getOffsetNumbers } from "../../utils"
 
 export type TPaginationData = {
@@ -57,20 +57,24 @@ export function usePagination({
     throw new Error("activePage must be at least 1")
   }
 
-  const pageNumbers = generateNumArr(1, Math.ceil(totalRecordsLength / recordsPerPage))
+  const pageNumbers = useMemo(() => generateNumArr(1, Math.ceil(totalRecordsLength / recordsPerPage)), [totalRecordsLength, recordsPerPage])
 
-  const firstPage = pageNumbers[0]
-  const lastPage = pageNumbers[pageNumbers.length - 1]
+  const firstPage = useMemo(() => pageNumbers[0], [pageNumbers])
+  const lastPage = useMemo(() => pageNumbers[pageNumbers.length - 1], [pageNumbers])
 
-  const { pageOffsetNumbers } = getOffsetNumbers({
-    pageNumbers,
-    firstNumber: firstPage,
-    lastNumber: lastPage,
-    activeNumber: activePage,
-    offset,
-    permanentFirstNumber,
-    permanentLastNumber,
-  })
+  const { pageOffsetNumbers } = useMemo(
+    () =>
+      getOffsetNumbers({
+        pageNumbers,
+        firstNumber: firstPage,
+        lastNumber: lastPage,
+        activeNumber: activePage,
+        offset,
+        permanentFirstNumber,
+        permanentLastNumber,
+      }),
+    [pageNumbers, firstPage, lastPage, activePage, offset, permanentFirstNumber, permanentLastNumber],
+  )
 
   return {
     records: {
