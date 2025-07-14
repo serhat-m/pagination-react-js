@@ -15,8 +15,8 @@ If you encounter a bug or have a feature request:
 
 Before contributing, ensure you have the following installed:
 
-- **Node.js 22**
-- **pnpm >= 9** (Install via: `npm install -g pnpm`)
+- **Node.js 24**
+- **pnpm 10**
 - **Biome** [VS Code Extension](https://biomejs.dev/reference/vscode/#biome-vs-code-extension) recommended
 
 1. Clone the repository:
@@ -55,7 +55,7 @@ Before contributing, ensure you have the following installed:
     
     ```bash
     pnpm dev
-    # http://localhost:3005/
+    # http://localhost:3007/
     ```
     
 
