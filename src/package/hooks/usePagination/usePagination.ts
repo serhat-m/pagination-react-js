@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { generateNumArr, getOffsetNumbers } from "../../utils"
 
 export type TPaginationData = {
@@ -7,15 +7,15 @@ export type TPaginationData = {
     indexOfFirst: number
     indexOfLast: number
   }
-  readonly pageNumbers: {
+  readonly pagination: {
     activePage: number
     firstPage: number
     lastPage: number
-    previousPage: number | false
-    nextPage: number | false
-    customPreviousPage: number | false
-    customNextPage: number | false
-    navigation: number[]
+    previousPage: number | null
+    nextPage: number | null
+    customPreviousPage: number | null
+    customNextPage: number | null
+    pageNumbers: number[]
   } | null
   readonly setActivePage: (pageNumber: number) => void
   readonly setRecordsPerPage: (recordsPerPage: number) => void
@@ -57,20 +57,24 @@ export function usePagination({
     throw new Error("activePage must be at least 1")
   }
 
-  const pageNumbers = generateNumArr(1, Math.ceil(totalRecordsLength / recordsPerPage))
+  const pageNumbers = useMemo(() => generateNumArr(1, Math.ceil(totalRecordsLength / recordsPerPage)), [totalRecordsLength, recordsPerPage])
 
-  const firstPage = pageNumbers[0]
-  const lastPage = pageNumbers[pageNumbers.length - 1]
+  const firstPage = useMemo(() => pageNumbers[0], [pageNumbers])
+  const lastPage = useMemo(() => pageNumbers[pageNumbers.length - 1], [pageNumbers])
 
-  const { pageOffsetNumbers } = getOffsetNumbers({
-    pageNumbers,
-    firstNumber: firstPage,
-    lastNumber: lastPage,
-    activeNumber: activePage,
-    offset,
-    permanentFirstNumber,
-    permanentLastNumber,
-  })
+  const { pageOffsetNumbers } = useMemo(
+    () =>
+      getOffsetNumbers({
+        pageNumbers,
+        firstNumber: firstPage,
+        lastNumber: lastPage,
+        activeNumber: activePage,
+        offset,
+        permanentFirstNumber,
+        permanentLastNumber,
+      }),
+    [pageNumbers, firstPage, lastPage, activePage, offset, permanentFirstNumber, permanentLastNumber],
+  )
 
   return {
     records: {
@@ -78,23 +82,23 @@ export function usePagination({
       indexOfFirst: indexOfFirstRecord,
       indexOfLast: indexOfLastRecord,
     },
-    pageNumbers:
+    pagination:
       firstPage && lastPage
         ? {
             activePage,
             firstPage,
             lastPage,
-            previousPage: activePage > firstPage ? activePage - 1 : false,
-            nextPage: activePage < lastPage ? activePage + 1 : false,
+            previousPage: activePage > firstPage ? activePage - 1 : null,
+            nextPage: activePage < lastPage ? activePage + 1 : null,
             customPreviousPage:
               navCustomPageSteps?.prev && activePage - navCustomPageSteps.prev >= firstPage + 1
                 ? activePage - navCustomPageSteps.prev
-                : false,
+                : null,
             customNextPage:
               navCustomPageSteps?.next && activePage + navCustomPageSteps.next <= lastPage - 1
                 ? activePage + navCustomPageSteps.next
-                : false,
-            navigation: pageOffsetNumbers,
+                : null,
+            pageNumbers: pageOffsetNumbers,
           }
         : null,
     setRecordsPerPage: (recordsPerPage) => {

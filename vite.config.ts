@@ -5,7 +5,7 @@ import { defineConfig } from "vite"
 export default defineConfig({
   plugins: [react(), vanillaExtractPlugin()],
   server: {
-    port: 3005,
+    port: 3007,
   },
   build: {
     rollupOptions: {

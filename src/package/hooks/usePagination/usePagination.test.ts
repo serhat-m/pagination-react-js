@@ -103,23 +103,23 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers?.previousPage).toBe(false)
-    expect(result.current.pageNumbers?.nextPage).toBe(2)
+    expect(result.current.pagination?.previousPage).toBeNull()
+    expect(result.current.pagination?.nextPage).toBe(2)
 
     act(() => {
-      const lastPage = result.current.pageNumbers?.lastPage
+      const lastPage = result.current.pagination?.lastPage
       lastPage && result.current.setActivePage(lastPage)
     })
 
-    expect(result.current.pageNumbers?.previousPage).toBe(49)
-    expect(result.current.pageNumbers?.nextPage).toBe(false)
+    expect(result.current.pagination?.previousPage).toBe(49)
+    expect(result.current.pagination?.nextPage).toBeNull()
 
     act(() => {
       result.current.setActivePage(20)
     })
 
-    expect(result.current.pageNumbers?.previousPage).toBe(19)
-    expect(result.current.pageNumbers?.nextPage).toBe(21)
+    expect(result.current.pagination?.previousPage).toBe(19)
+    expect(result.current.pagination?.nextPage).toBe(21)
   })
 
   it("should return correct custom page navigation values", () => {
@@ -133,23 +133,23 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers?.customPreviousPage).toBe(false)
-    expect(result.current.pageNumbers?.customNextPage).toBe(4)
+    expect(result.current.pagination?.customPreviousPage).toBeNull()
+    expect(result.current.pagination?.customNextPage).toBe(4)
 
     act(() => {
-      const lastPage = result.current.pageNumbers?.lastPage
+      const lastPage = result.current.pagination?.lastPage
       lastPage && result.current.setActivePage(lastPage)
     })
 
-    expect(result.current.pageNumbers?.customPreviousPage).toBe(47)
-    expect(result.current.pageNumbers?.customNextPage).toBe(false)
+    expect(result.current.pagination?.customPreviousPage).toBe(47)
+    expect(result.current.pagination?.customNextPage).toBeNull()
 
     act(() => {
       result.current.setActivePage(20)
     })
 
-    expect(result.current.pageNumbers?.customPreviousPage).toBe(17)
-    expect(result.current.pageNumbers?.customNextPage).toBe(23)
+    expect(result.current.pagination?.customPreviousPage).toBe(17)
+    expect(result.current.pagination?.customNextPage).toBe(23)
   })
 
   it("should return correct first and last page number", () => {
@@ -163,8 +163,8 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers?.firstPage).toBe(1)
-    expect(result.current.pageNumbers?.lastPage).toBe(50)
+    expect(result.current.pagination?.firstPage).toBe(1)
+    expect(result.current.pagination?.lastPage).toBe(50)
   })
 
   it("should return correct current page number and setter", () => {
@@ -178,13 +178,13 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers?.activePage).toBe(1)
+    expect(result.current.pagination?.activePage).toBe(1)
 
     act(() => {
       result.current.setActivePage(4)
     })
 
-    expect(result.current.pageNumbers?.activePage).toBe(4)
+    expect(result.current.pagination?.activePage).toBe(4)
   })
 
   it("should return correct records per page number and setter", () => {
@@ -218,13 +218,13 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers?.navigation).toEqual([1, 2, 3, 4, 5, 6, 7])
+    expect(result.current.pagination?.pageNumbers).toEqual([1, 2, 3, 4, 5, 6, 7])
 
     act(() => {
       result.current.setActivePage(7)
     })
 
-    expect(result.current.pageNumbers?.navigation).toEqual([4, 5, 6, 7, 8, 9, 10])
+    expect(result.current.pagination?.pageNumbers).toEqual([4, 5, 6, 7, 8, 9, 10])
   })
 
   it("should throw an error when totalRecordsLength is negative", () => {
@@ -290,6 +290,6 @@ describe("functional cases", () => {
       }),
     )
 
-    expect(result.current.pageNumbers).toBeNull()
+    expect(result.current.pagination).toBeNull()
   })
 })
