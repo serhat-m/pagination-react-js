@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.1](https://github.com/serhat-m/pagination-react-js/compare/v3.0.0...v3.0.1) (2025-07-14)
+
+
+### Miscellaneous
+
+* add missing tsup dev dependency ([c96cebe](https://github.com/serhat-m/pagination-react-js/commit/c96cebe9a4e01bf726ff7ae0ec3a935fa32001f4))
+* update build script ([21ee210](https://github.com/serhat-m/pagination-react-js/commit/21ee210584de6229cb0d1dc100a05a5553e8db4d))
+
 ## [3.0.0](https://github.com/serhat-m/pagination-react-js/compare/2.1.2...v3.0.0) (2025-07-14)
 
 
