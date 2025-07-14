@@ -7,15 +7,15 @@ export type TPaginationData = {
     indexOfFirst: number
     indexOfLast: number
   }
-  readonly pageNumbers: {
+  readonly pagination: {
     activePage: number
     firstPage: number
     lastPage: number
-    previousPage: number | false
-    nextPage: number | false
-    customPreviousPage: number | false
-    customNextPage: number | false
-    navigation: number[]
+    previousPage: number | null
+    nextPage: number | null
+    customPreviousPage: number | null
+    customNextPage: number | null
+    pageNumbers: number[]
   } | null
   readonly setActivePage: (pageNumber: number) => void
   readonly setRecordsPerPage: (recordsPerPage: number) => void
@@ -78,23 +78,23 @@ export function usePagination({
       indexOfFirst: indexOfFirstRecord,
       indexOfLast: indexOfLastRecord,
     },
-    pageNumbers:
+    pagination:
       firstPage && lastPage
         ? {
             activePage,
             firstPage,
             lastPage,
-            previousPage: activePage > firstPage ? activePage - 1 : false,
-            nextPage: activePage < lastPage ? activePage + 1 : false,
+            previousPage: activePage > firstPage ? activePage - 1 : null,
+            nextPage: activePage < lastPage ? activePage + 1 : null,
             customPreviousPage:
               navCustomPageSteps?.prev && activePage - navCustomPageSteps.prev >= firstPage + 1
                 ? activePage - navCustomPageSteps.prev
-                : false,
+                : null,
             customNextPage:
               navCustomPageSteps?.next && activePage + navCustomPageSteps.next <= lastPage - 1
                 ? activePage + navCustomPageSteps.next
-                : false,
-            navigation: pageOffsetNumbers,
+                : null,
+            pageNumbers: pageOffsetNumbers,
           }
         : null,
     setRecordsPerPage: (recordsPerPage) => {
