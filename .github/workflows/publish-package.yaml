@@ -24,7 +24,7 @@ jobs:
         run: pnpm install
 
       - name: Build package
-        run: pnpm run build
+        run: pnpm run build:package
 
       - name: Publish
         run: npm pkg delete scripts.prepare && npm publish --access public
