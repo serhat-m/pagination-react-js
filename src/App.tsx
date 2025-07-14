@@ -1,4 +1,5 @@
 import type React from "react"
+import { useMemo } from "react"
 import { usePagination } from "./package"
 import {
   headerStyle,
@@ -19,7 +20,6 @@ import {
   tableWrapperStyle,
 } from "./ui/styles/components/Table.css"
 import { light } from "./ui/styles/themes"
-import { generateTestData } from "./ui/utils/generateTestData/generateTestData"
 import { joinClassNames } from "./ui/utils/joinClassNames/joinClassNames"
 
 type PaginationItemProps = {
@@ -46,13 +46,17 @@ const PaginationItem = ({ children, label, active, onClick }: PaginationItemProp
 }
 
 const App = () => {
-  const dataList = generateTestData(500, (index) => ({
-    id: index,
-    name: `Test ${index}`,
-    gender: index % 2 ? "Female" : "Male",
-    position: `Position ${index}`,
-    email: `test${index}@test.com`,
-  }))
+  const dataList = useMemo(
+    () =>
+      Array.from({ length: 500 }, (_, index) => ({
+        id: index,
+        name: `Test ${index}`,
+        gender: index % 2 ? "Female" : "Male",
+        position: `Position ${index}`,
+        email: `test${index}@test.com`,
+      })),
+    [],
+  )
 
   const { records, pagination, setActivePage, setRecordsPerPage } = usePagination({
     activePage: 1,
