@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.3](https://github.com/serhat-m/pagination-react-js/compare/v3.0.2...v3.0.3) (2025-07-16)
+
+
+### Core
+
+* fix readme typo ([4361593](https://github.com/serhat-m/pagination-react-js/commit/4361593153a70fd2428120837b002c30888ce91a))
+* improve readme ([ea64918](https://github.com/serhat-m/pagination-react-js/commit/ea6491849f76a56ae8fad851e0987c7851a5d02a))
+* improve ui ([beeda47](https://github.com/serhat-m/pagination-react-js/commit/beeda4791af2943a8c95fc21daa24ca14394d169))
+
 ## [3.0.2](https://github.com/serhat-m/pagination-react-js/compare/v3.0.1...v3.0.2) (2025-07-14)
 
 
