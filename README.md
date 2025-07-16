@@ -9,19 +9,14 @@ https://serhat-m.github.io/pagination-react-js
 Fully customizable pagination example:
 
 ```tsx
-type PaginationItemProps = {
-  children: React.ReactNode
-  label: React.ComponentProps<"button">["aria-label"]
-  active?: boolean
-  onClick: React.ComponentProps<"button">["onClick"]
-}
+import { usePagination } from "pagination-react-js"
+import { useMemo } from "react"
 
-const PaginationItem = ({ children, label, active, onClick }: PaginationItemProps) => {
+const PaginationItem = ({ children, label, active, onClick }) => {
   return (
     <li>
       <button
-        type="button"
-        className={["pagination-item", active ? "pagination-item-active" : undefined].filter((value) => value).join(" ")}
+        className={`pagination-item${active ? " pagination-item-active" : ""}`}
         onClick={onClick}
         aria-current={active}
         aria-label={label}
@@ -38,7 +33,6 @@ const PaginatedTable = () => {
       Array.from({ length: 500 }, (_, index) => ({
         id: index,
         name: `Test ${index}`,
-        gender: index % 2 ? "Female" : "Male",
         position: `Position ${index}`,
         email: `test${index}@test.com`,
       })),
@@ -55,7 +49,7 @@ const PaginatedTable = () => {
     permanentLastNumber: true,
   })
 
-  function updateActivePage(pageNumber: number | null) {
+  function updateActivePage(pageNumber) {
     if(pageNumber) setActivePage(pageNumber)
   }
 
@@ -77,11 +71,11 @@ const PaginatedTable = () => {
       {pagination && (
         <nav aria-label="Page navigation">
           <ul className="pagination">
-            <PaginationItem label={`Goto first page ${pagination.firstPage}`} onClick={() => updateActivePage(pagination.firstPage)}>
+            <PaginationItem label={`Goto first page ${pagination.firstPage}`} active={false} onClick={() => updateActivePage(pagination.firstPage)}>
               &laquo;
             </PaginationItem>
 
-            <PaginationItem label={`Goto previous page ${pagination.previousPage}`} onClick={() => updateActivePage(pagination.previousPage)}>
+            <PaginationItem label={`Goto previous page ${pagination.previousPage}`} active={false} onClick={() => updateActivePage(pagination.previousPage)}>
               &lsaquo;
             </PaginationItem>
 
@@ -94,28 +88,30 @@ const PaginatedTable = () => {
             </PaginationItem>
 
             {pagination.customPreviousPage && (
-              <PaginationItem label={`Goto page ${pagination.customPreviousPage}`} onClick={() => updateActivePage(pagination.customPreviousPage)}>
+              <PaginationItem label={`Goto page ${pagination.customPreviousPage}`} active={false} onClick={() => updateActivePage(pagination.customPreviousPage)}>
                 &middot;&middot;&middot;
               </PaginationItem>
             )}
 
-            {pagination.pageNumbers.map((paginationNumber) => {
-              const isFirstOrLastPage = paginationNumber === pagination.firstPage || paginationNumber === pagination.lastPage
+            {pagination.pageNumbers.map((pageNumber) => {
+              const isFirstOrLastPage = pageNumber === pagination.firstPage || pageNumber === pagination.lastPage
 
-              return isFirstOrLastPage ? null : (
+              if(isFirstOrLastPage) return
+
+              return (
                 <PaginationItem
-                  label={`Goto page ${paginationNumber}`}
-                  key={paginationNumber}
-                  active={paginationNumber === pagination.activePage}
-                  onClick={() => updateActivePage(paginationNumber)}
+                  label={`Goto page ${pageNumber}`}
+                  key={pageNumber}
+                  active={pageNumber === pagination.activePage}
+                  onClick={() => updateActivePage(pageNumber)}
                 >
-                  {paginationNumber}
+                  {pageNumber}
                 </PaginationItem>
               )
             })}
 
             {pagination.customNextPage && (
-              <PaginationItem label={`Goto page ${pagination.customNextPage}`} onClick={() => updateActivePage(pagination.customNextPage)}>
+              <PaginationItem label={`Goto page ${pagination.customNextPage}`} active={false} onClick={() => updateActivePage(pagination.customNextPage)}>
                 &middot;&middot;&middot;
               </PaginationItem>
             )}
@@ -130,17 +126,16 @@ const PaginatedTable = () => {
               </PaginationItem>
             )}
 
-            <PaginationItem label={`Goto next page ${pagination.nextPage}`} onClick={() => updateActivePage(pagination.nextPage)}>
+            <PaginationItem label={`Goto next page ${pagination.nextPage}`} active={false} onClick={() => updateActivePage(pagination.nextPage)}>
               &rsaquo;
             </PaginationItem>
 
-            <PaginationItem label={`Goto last page ${pagination.lastPage}`} onClick={() => updateActivePage(pagination.lastPage)}>
+            <PaginationItem label={`Goto last page ${pagination.lastPage}`} active={false} onClick={() => updateActivePage(pagination.lastPage)}>
               &raquo;
             </PaginationItem>
           </ul>
         </nav>
       )}
-
     </div>
   )
 }

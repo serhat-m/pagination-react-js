@@ -51,7 +51,6 @@ const App = () => {
       Array.from({ length: 500 }, (_, index) => ({
         id: index,
         name: `Test ${index}`,
-        gender: index % 2 ? "Female" : "Male",
         position: `Position ${index}`,
         email: `test${index}@test.com`,
       })),
@@ -107,9 +106,6 @@ const App = () => {
                 <th title="Name" className={tableHeaderCellStyle}>
                   Name
                 </th>
-                <th title="Gender" className={tableHeaderCellStyle}>
-                  Gender
-                </th>
                 <th title="Position" className={tableHeaderCellStyle}>
                   Position
                 </th>
@@ -123,7 +119,6 @@ const App = () => {
                 <tr key={record.id} className={tableBodyRowStyle}>
                   <td className={tableCellStyle}>{record.id}</td>
                   <td className={tableCellStyle}>{record.name}</td>
-                  <td className={tableCellStyle}>{record.gender}</td>
                   <td className={tableCellStyle}>{record.position}</td>
                   <td className={tableCellStyle}>{record.email}</td>
                 </tr>
