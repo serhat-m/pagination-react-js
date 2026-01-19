@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.4](https://github.com/serhat-m/pagination-react-js/compare/v3.0.3...v3.0.4) (2026-01-19)
+
+
+### Miscellaneous
+
+* remove engines and update package manager ([ddbadb6](https://github.com/serhat-m/pagination-react-js/commit/ddbadb650958714d0678e6bf5145f1762f5e5e22))
+* update dependencies ([360f0c4](https://github.com/serhat-m/pagination-react-js/commit/360f0c4bcbab10363671c69e4b120b6deb14a227))
+* update node version in workflows ([cf4a12c](https://github.com/serhat-m/pagination-react-js/commit/cf4a12ceb59987ff09236f0003a4dde95576242c))
+
 ## [3.0.3](https://github.com/serhat-m/pagination-react-js/compare/v3.0.2...v3.0.3) (2025-07-16)
 
 
